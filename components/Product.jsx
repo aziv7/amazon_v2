@@ -15,7 +15,7 @@ const Product = ({ product }) => {
       </p>
 
       <Image
-        className='m-5 transition-all transform ease-in-out group-hover:scale-105'
+        className='m-5 z-40 transition-all transform ease-in-out group-hover:scale-105'
         src={image}
         height={180}
         width={180}
