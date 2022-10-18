@@ -8,11 +8,13 @@ import {
 
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectItems } from '../slices/cartReducer';
 
 const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
-
+  const items = useSelector(selectItems);
   return (
     <header>
       <div className='flex items-center p-1 flex-grow py-2 bg-amazon_blue'>
@@ -52,7 +54,7 @@ const Header = () => {
             <ShoppingCartIcon className='h-10 ' />
 
             <div className='rounded-full absolute top-0 left-7 h-4 w-4 bg-yellow-400 text-xs font-bold text-black text-center'>
-              8
+              {items?.length}
             </div>
           </div>
         </div>
