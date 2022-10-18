@@ -7,8 +7,10 @@ import {
 } from '@heroicons/react/outline';
 
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Header = () => {
+  const router = useRouter();
   const { data: session } = useSession();
 
   return (
@@ -16,6 +18,7 @@ const Header = () => {
       <div className='flex items-center p-1 flex-grow py-2 bg-amazon_blue'>
         <div className='mt-2 flex items-center flex-grow sm:flex-grow-0'>
           <Image
+            onClick={() => router.push('/')}
             className='cursor-pointer'
             objectFit='contain'
             src='https://links.papareact.com/f90'
@@ -42,8 +45,12 @@ const Header = () => {
           <div className='link'>
             <p className='font-extrabold md:text-sm'>Returns & Orders</p>
           </div>
-          <div className='link relative hidden md:inline'>
+          <div
+            onClick={() => router.push('/checkout')}
+            className='link relative hidden md:inline'
+          >
             <ShoppingCartIcon className='h-10 ' />
+
             <div className='rounded-full absolute top-0 left-7 h-4 w-4 bg-yellow-400 text-xs font-bold text-black text-center'>
               8
             </div>
