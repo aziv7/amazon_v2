@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CheckoutProduct } from '../components';
 import Header from '../components/Header';
@@ -7,6 +7,19 @@ import { selectItems } from '../slices/cartReducer';
 
 const Checkout = () => {
   const items = useSelector(selectItems);
+
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    let prodcts = [];
+    items.map((e) => {
+      let index = prodcts.findIndex((p) => p.id == e.id);
+
+      if (index == -1) prodcts.push({ ...e, quantity: 1 });
+      else prodcts[index].quantity += 1;
+    });
+
+    setProducts(prodcts);
+  }, [items]);
 
   return (
     <div className='bg-gray-100'>
@@ -26,7 +39,7 @@ const Checkout = () => {
             {items.length > 0 ? 'Shopping Cart' : 'Shopping Cart is empty'}{' '}
             Shopping Cart
           </h1>
-          {items.map((item) => (
+          {products.map((item) => (
             <CheckoutProduct product={item} key={item.id} />
           ))}
         </div>
