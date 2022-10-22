@@ -10,7 +10,7 @@ const Product = ({ product }) => {
   const [rate] = useState(Math.floor(Math.random() * (5 - 1 + 1)) + 1);
   const [prime] = useState(Math.floor(Math.random() * (5 - 1 + 1)) + 1 == 4);
   const addItem = () => {
-    dispatch(addToCart(product));
+    dispatch(addToCart({ ...product, rate, prime }));
   };
   const { id, category, description, image, price, rating, title } = product;
   return (
