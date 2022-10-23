@@ -1,12 +1,18 @@
+import { useSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import CurrencyFormat from 'react-currency-format';
 import { useSelector } from 'react-redux';
 import { CheckoutProduct } from '../components';
 import Header from '../components/Header';
-import { selectItems } from '../slices/cartReducer';
+import { selectItems, selectItemsPrice } from '../slices/cartReducer';
 
 const Checkout = () => {
+  const { data: session } = useSession();
   const items = useSelector(selectItems);
+  const price = useSelector(selectItemsPrice);
+
+  console.log(price);
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -20,6 +26,8 @@ const Checkout = () => {
 
     setProducts(prodcts);
   }, [items]);
+
+  const checkout = () => {};
 
   return (
     <div className='bg-gray-100'>
@@ -45,6 +53,34 @@ const Checkout = () => {
         </div>
 
         {/**right section */}
+        <div className='flex flex-col bg-white p-10 shadow-md'>
+          {items.length > 0 && (
+            <>
+              <h2 className='whitespace-nowrap'>
+                Subtotal ({items.length} items):{' '}
+                <span className='font-bold'>
+                  {' '}
+                  <CurrencyFormat
+                    prefix={'$'}
+                    displayType={'text'}
+                    value={price}
+                  />{' '}
+                </span>
+              </h2>
+
+              <span className='font-bold'></span>
+              <button
+                disabled={!session}
+                className={` button mt-2 ${
+                  !session &&
+                  'from-gray-300 to-gray-500 border-gray-200 cursor-not-allowed text-gray-200'
+                }`}
+                onClick={!session ? signIn : checkout}>
+                {!session ? 'SignIn to checkout' : 'Checkout'}
+              </button>
+            </>
+          )}
+        </div>
       </main>
     </div>
   );
