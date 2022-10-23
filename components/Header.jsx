@@ -44,13 +44,16 @@ const Header = () => {
             <p> {session ? `Hello ${session?.user?.name}` : 'Sign In'} </p>
             <p className='font-extrabold md:text-sm'>Account & Lists</p>
           </div>
-          <div className='link'>
+          <div
+            onClick={() => {
+              session && router.push('/orders');
+            }}
+            className='link'>
             <p className='font-extrabold md:text-sm'>Returns & Orders</p>
           </div>
           <div
             onClick={() => router.push('/checkout')}
-            className='link relative hidden md:inline'
-          >
+            className='link relative hidden md:inline'>
             <ShoppingCartIcon className='h-10 ' />
 
             <div className='rounded-full absolute top-0 left-7 h-4 w-4 bg-yellow-400 text-xs font-bold text-black text-center'>
