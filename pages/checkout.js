@@ -6,13 +6,14 @@ import { useSelector } from 'react-redux';
 import { CheckoutProduct } from '../components';
 import Header from '../components/Header';
 import { selectItems, selectItemsPrice } from '../slices/cartReducer';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 
 const Checkout = () => {
+  const stripePromise = loadStripe(process.env.stripe_public_key);
   const { data: session } = useSession();
   const items = useSelector(selectItems);
   const price = useSelector(selectItemsPrice);
-
-  console.log(price);
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -27,7 +28,21 @@ const Checkout = () => {
     setProducts(prodcts);
   }, [items]);
 
-  const checkout = () => {};
+  const checkout = async () => {
+    const stripe = await stripePromise;
+
+    //create checkout session
+
+    const stripeSession = await axios.post('/api/checkout_session', {
+      items,
+      email: session?.user?.email,
+    });
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: stripeSession?.data.id,
+    });
+    if (result.error) alert(result.error.message);
+  };
 
   return (
     <div className='bg-gray-100'>
@@ -70,6 +85,7 @@ const Checkout = () => {
 
               <span className='font-bold'></span>
               <button
+                role='link'
                 disabled={!session}
                 className={` button mt-2 ${
                   !session &&
