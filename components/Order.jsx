@@ -28,7 +28,7 @@ const Order = ({ order }) => {
       </div>
       <div className='p-5 sm:p-10'>
         <div className='flex space-x-6 overflow-x-auto '>
-          {images.map((img) => (
+          {order?.images.map((img) => (
             <img src={img} className='h-20 object-contain sm:h-32' />
           ))}
         </div>
